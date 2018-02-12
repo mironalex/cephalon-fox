@@ -14,6 +14,10 @@ If you want to run this yourself you'll need to follow standard boilerplate for
 
 ## History
 
+- **v1.0.1**
+    - Added emojis to the main Discord message (because why not?)
+
+
 - **v1.0.0**
     - Created a while new system for getting the correct time cycles
     - Removed unused and/or redundant code
