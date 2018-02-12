@@ -1,0 +1,6 @@
+Hello! I am a discord bot for Eidolon day/night cycles.
+
+Available commands:
+
+~time - Get the current cycle and the time left
+~ver  - This bot's version + hosted info
