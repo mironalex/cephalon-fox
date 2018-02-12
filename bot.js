@@ -21,6 +21,17 @@ bot.on('ready', function (evt) {                                    // do some l
     });
 });
 
+bot.on('disconnect', function (evt) {
+    console.log(`Bot DISCONNECTED at ${new Date().toISOString()}`);
+    console.log('Attempting reconnect...');
+    bot.connect();
+    if (bot.connected == true) {
+        console.log('Reconnected to Discord');
+    } else {
+        console.log('Reconnect failed...');
+    }
+});
+
 bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '~') {                           // listen for messages that will start with `~`
         var args = message.substring(1).split(' ');
