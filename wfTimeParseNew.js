@@ -29,12 +29,12 @@ function updateTime() {
     if (150 - irltime_m > 50) {
         // Time is day
         next_interval = 21;
-        currentCycle = 'Day'
+        currentCycle = 'Day :sunny:';
         untilCycle = 'Night';
     } else {
         // Time is night
         next_interval = 5;
-        currentCycle = 'Night';
+        currentCycle = 'Night :crescent_moon:';
         untilCycle = 'Day';
     }
 
@@ -53,7 +53,7 @@ function updateTime() {
     var irl_until_m = Math.floor(irl_until_in_m % 60);
     var irl_until_s = Math.floor((irl_until_in_m * 60) % 60);
 
-    return `It is ccurently ${currentCycle}. \n\n${irl_until_h}h ${irl_until_m}m ${irl_until_s}s until ${untilCycle}.`;
+    return `It is ccurently ${currentCycle} \n\n${irl_until_h}h ${irl_until_m}m ${irl_until_s}s until ${untilCycle}.`;
 }
 
 // Export the function
