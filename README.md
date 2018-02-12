@@ -1,4 +1,4 @@
-# WFEidolonCycleDiscordBot
+# eidoclock-discord
 
 Hello and welcome!
 
