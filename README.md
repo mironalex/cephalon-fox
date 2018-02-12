@@ -5,7 +5,8 @@ Hello and welcome!
 This Discord bot is designed to provide a relatively accurate Day/Night cycle for
 Warframe - Plains of Eidolon expansion.
 
-# Usage
+
+## Usage
 
 If you want to run this yourself you'll need to follow standard boilerplate for 
 [Discord.io](https://github.com/izy521/discord.io)
@@ -31,4 +32,3 @@ If you want to run this yourself you'll need to follow standard boilerplate for
 
 If you'd like to help contribute to this project or create a bot for another chat platform, feel free to
 contact me! I've also done work on telegram/skype bots.
-
