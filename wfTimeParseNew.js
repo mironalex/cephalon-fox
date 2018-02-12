@@ -53,7 +53,7 @@ function updateTime() {
     var irl_until_m = Math.floor(irl_until_in_m % 60);
     var irl_until_s = Math.floor((irl_until_in_m * 60) % 60);
 
-    return `It is ccurently ${currentCycle} \n\n${irl_until_h}h ${irl_until_m}m ${irl_until_s}s until ${untilCycle}.`;
+    return `It is curently ${currentCycle} \n\n${irl_until_h}h ${irl_until_m}m ${irl_until_s}s until ${untilCycle}.`;
 }
 
 // Export the function
