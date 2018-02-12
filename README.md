@@ -25,7 +25,16 @@ If you want to run this yourself you'll need to follow standard boilerplate for
 
 
 - **v0.0.187**
-    - Initial release
+    - First Stable release
+
+
+- **Alpha 0.0.173**
+    - Borrowed code from: [warframe](https://github.com/EricSihaoLin/warframe) (now abandoned project) 
+
+
+- **Alpha 0.0.10**
+    - Initial test release
+
 
 
 ## Contributing
