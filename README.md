@@ -14,6 +14,10 @@ If you want to run this yourself you'll need to follow standard boilerplate for
 
 ## History
 
+- **v1.0.2**
+    - Fixed start_time var after most recent patch [Merge from parent project here](https://github.com/lyneca/eidoclock/pull/5) - @lyneca 
+    - Added version delcaration to startup messages
+
 - **v1.0.1**
     - Added emojis to the main Discord message (because why not?)
     - Added a basic bot disconnect handler

@@ -1,6 +1,6 @@
 'use strict';                                                       // more stringent error reporting for small things
 const config = require('./config.js');                              // conifg/auth data
-const ver = '1.0.1';
+const ver = '1.0.2';
 let parser = require('./wfTimeParseNew');                           // module to get the Discord message for ~time
 var Discord = require('discord.io');                                // discord API wrapper
 var fs = require('fs');                                             // used to read helpNotes.txt
@@ -14,7 +14,7 @@ var bot = new Discord.Client({                                      // Initializ
 console.log('Attempting to connect to Discord...');
 bot.on('ready', function (evt) {                                    // do some logging and start ensure bot is running
     console.log('Connected to Discord...');
-    console.log(`Logged in as: ${bot.username} - (${bot.id})`);
+    console.log(`Logged in as: ${bot.username} version ${ver}- (${bot.id})`);
     bot.setPresence({                                               // make the bot 'play' soemthing
         idle_since: null,
         game: { name: 'Warframe' }
