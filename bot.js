@@ -11,7 +11,7 @@ var bot = new Discord.Client({                                      // Initializ
     autorun: true
 });
 
-console.log('Attempting to connect to Discord')
+console.log('Attempting to connect to Discord...');
 bot.on('ready', function (evt) {                                    // do some logging and start ensure bot is running
     console.log('Connected to Discord...');
     console.log(`Logged in as: ${bot.username} - (${bot.id})`);
