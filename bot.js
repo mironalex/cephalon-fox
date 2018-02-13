@@ -61,8 +61,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 });
 
 // This will send the message after the parser creates the string
-function getTime(channelIDArg) {
-    var message = parser.updateTime();
+async function getTime(channelIDArg) {
+    var message = await parser.updateTime();
     bot.sendMessage({
         to: channelIDArg,
         message: message
