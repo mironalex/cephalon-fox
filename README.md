@@ -12,6 +12,11 @@ If you want to run this yourself you'll need to follow standard boilerplate for
 [Discord.io](https://github.com/izy521/discord.io)
 
 
+## Adding this bot to your server
+
+You can use [This link](https://discordapp.com/oauth2/authorize?client_id=370340578858237952&scope=bot&permissions=347200)
+
+
 ## History
 
 - **v1.0.2**
