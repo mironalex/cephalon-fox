@@ -30,12 +30,13 @@ function requestUrl(url) {
 
 // Get the PC data's JSON (All we really need to care about) 
 function refreshCetusStartTime() {
-    let timestamp = 1510884902;
+    // As of April 3rd, 2018
+    let timestamp = 1522764301;
     return requestUrl('http://content.warframe.com/dynamic/worldState.php')
         .then((responseBody) => {
             let worldState = JSON.parse(responseBody);
             let syndicate = worldState["SyndicateMissions"].find(element => (element["Tag"] == "CetusSyndicate"));
-            //The activation time, converted to whole seconds
+            // The activation time, converted to whole seconds
             timestamp = Math.floor(syndicate["Activation"]["$date"]["$numberLong"] / 1000);
             console.log("Fetched Cetus time: ", timestamp);
             return timestamp;

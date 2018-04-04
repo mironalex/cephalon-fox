@@ -1,6 +1,6 @@
 'use strict';                                                       // more stringent error reporting for small things
 const config = require('./config.js');                              // conifg/auth data
-const ver = '1.0.2';
+const ver = '1.0.3';
 let parser = require('./wfTimeParseNew');                           // module to get the Discord message for ~time
 var Discord = require('discord.io');                                // discord API wrapper
 var fs = require('fs');                                             // used to read helpNotes.txt

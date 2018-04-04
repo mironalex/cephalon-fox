@@ -19,9 +19,14 @@ You can use [This link](https://discordapp.com/oauth2/authorize?client_id=370340
 
 ## History
 
+- **v1.0.3**
+    - Adjusted the timestamp for the bot one more time (Accurate as of April 4th 2018)
+
+
 - **v1.0.2**
     - Fixed start_time var after most recent patch [Merge from parent project here](https://github.com/lyneca/eidoclock/pull/5) - @lyneca 
     - Added version delcaration to startup messages
+
 
 - **v1.0.1**
     - Added emojis to the main Discord message (because why not?)
