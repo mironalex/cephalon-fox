@@ -1,6 +1,6 @@
 'use strict';                                                       // more stringent error reporting for small things
 const config = require('./config.js');                              // conifg/auth data
-const ver = '1.0.3';
+const ver = '1.1.0';
 let parser = require('./wfTimeParseNew');                           // module to get the Discord message for ~time
 var Discord = require('discord.io');                                // discord API wrapper
 var fs = require('fs');                                             // used to read helpNotes.txt
@@ -11,25 +11,14 @@ var bot = new Discord.Client({                                      // Initializ
     autorun: true
 });
 
-console.log('Attempting to connect to Discord...');
+console.log('Attempting to connect to Discord')
 bot.on('ready', function (evt) {                                    // do some logging and start ensure bot is running
     console.log('Connected to Discord...');
-    console.log(`Logged in as: ${bot.username} version ${ver}- (${bot.id})`);
+    console.log(`Logged in as: ${bot.username} - (${bot.id})`);
     bot.setPresence({                                               // make the bot 'play' soemthing
         idle_since: null,
         game: { name: 'Warframe' }
     });
-});
-
-bot.on('disconnect', function (evt) {
-    console.log(`Bot DISCONNECTED at ${new Date().toISOString()}`);
-    console.log('Attempting reconnect...');
-    bot.connect();
-    if (bot.connected == true) {
-        console.log('Reconnected to Discord');
-    } else {
-        console.log('Reconnect failed...');
-    }
 });
 
 bot.on('message', function (user, userID, channelID, message, evt) {
@@ -61,10 +50,13 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 });
 
 // This will send the message after the parser creates the string
-async function getTime(channelIDArg) {
-    var message = await parser.updateTime();
-    bot.sendMessage({
-        to: channelIDArg,
-        message: message
-    });
+function getTime(channelIDArg) {
+    parser.updateTime()
+        .then((response) => {
+            bot.sendMessage({
+                to: channelIDArg,
+                message: response
+            });
+        })
+
 }
