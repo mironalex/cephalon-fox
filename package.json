@@ -10,7 +10,7 @@
   "repository": "https://github.com/LilithTundrus/eidoclock-discord",
   "license": "GPL-3.0",
   "dependencies": {
-    "discord.io": "^2.5.3",
+    "discord.io": "github:izy521/discord.io",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   }
