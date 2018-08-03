@@ -90,8 +90,8 @@ function translateToIRL(timestamp){
     }
 }
 
-function getIRLState(){
-    return translateToIRL(getCetusTimestamp());
+async function getIRLState(){
+    return translateToIRL(await (getCetusTimestamp()));
 }
 
 /**

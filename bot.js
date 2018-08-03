@@ -8,23 +8,22 @@ const ver = '2.0.0';
 let parser = require('./wfTimeParseNew');
 
 // Node requires
-var fs = require('fs');
-var os = require('os');
+let fs = require('fs');
+let os = require('os');
 
 // Initialize the Discord bot using discord.js
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const DAY = 0;
-const NIGHT = 1;
 
 client.login(config.token);
 
 client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
-    updateBot();
-    // Set a timer to check whether cycle changed and update bot accordingly
-    setInterval(() => {updateBot();}, 60000);
 
+    // Set a timer to check whether cycle changed and update bot accordingly
+    updateBot();
+    setInterval(updateBot, 60000);
 });
 
 client.on('message', async message => {
@@ -58,7 +57,7 @@ client.on('message', async message => {
         case 'time':
             return getTime(message.channel.id);
         case 'test':
-            return updateBot(message.channel.id);
+            return updateBot();
         default:
             // If command character + unknown command is given we at least need to let the user know
             let errorEmbed = `Unknown command: **${command}**`;
@@ -81,14 +80,23 @@ function getTime(channelIDArg) {
 
 
 //Updates the avatar and activity of the bot
-function updateBot(){
-    let cycle = parser.getIRLState().cycle;
-    if (DAY === cycle) {
-        client.user.setAvatar('avatars/day.png');
-        client.user.setActivity(`Cetus DAY`);
+async function updateBot(){
+    let state = await(parser.getIRLState());
+    if (DAY === state.cycle) {
+        client.user.setAvatar('avatars/day.png').catch(function (error) {
+            console.log(error);
+        });
+        client.user.setActivity(`Cetus DAY`).catch(function (error) {
+            console.log(error)
+        });
     }
     else {
-        client.user.setAvatar('avatars/night.png');
-        client.user.setActivity(`Cetus NIGHT`);
+        client.user.setAvatar('avatars/night.png').catch(function (error) {
+            console.log(error);
+        });
+        client.user.setActivity(`Cetus NIGHT`).catch(function (error) {
+            console.log(error);
+        });
     }
+
 }

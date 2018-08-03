@@ -1,14 +1,14 @@
 {
-  "name": "eidoclock-discord",
-  "version": "1.0.1",
+  "name": "cephalon-fox",
+  "version": "1.0.0",
   "description": "Discord Cetus/Eidolon day/night cycle bot",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
-  "author": "Lilith Tundrus",
-  "repository": "https://github.com/LilithTundrus/eidoclock-discord",
-  "license": "GPL-3.0",
+  "author": "Alexandru Miron",
+  "repository": "https://github.com/mironalex/cephalon-fox",
+  "license": "MIT",
   "dependencies": {
     "discord.io": "github:izy521/discord.io",
     "discord.js": "^11.3.2",
