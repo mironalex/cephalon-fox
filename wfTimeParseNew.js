@@ -5,87 +5,117 @@ const request = require('request-promise');
 // URL to try and parse for the Cetus time
 let wfStateURL = 'http://content.warframe.com/dynamic/worldState.php';
 
+const DAY = 0;
+const NIGHT = 1;
+const cycles = ['Day', 'Night'];
+const cyclesEmoji = [':sunny:', ':crescent_moon:'];
+
 /**
- * Get the Day/Night cycle message (One huge function)
- * @returns {String} 
+ * Get the timestamp of Cetus/Plains of Eidolon
+ * @returns {number}
  */
-function updateTime() {
-    // Get the warframe state JSON manifest to get the timestamp of the next night cycle
+async function getCetusTimestamp(){
     return request.get(wfStateURL)
-        .then((response) => {
+        .then((stateJSON) => {
             let worldState;
             try {
-                worldState = JSON.parse(response);
+                worldState = JSON.parse(stateJSON);
             } catch (exception) {
-                return `Could not fetch Cetus time: ${exception}`;
+                console.log(exception);
             }
             // this syndicate mission is actually the Cetus bounty guy
-            let syndicate = worldState["SyndicateMissions"].find(element => (element["Tag"] == "CetusSyndicate"));
+            let syndicate = worldState["SyndicateMissions"].find(element => (element["Tag"] === "CetusSyndicate"));
 
-            if (syndicate == undefined) {
-                return `Could not parse for syndicate bounties`;
+            if (syndicate === undefined) {
+                console.log(`Could not parse for syndicate bounties`);
             }
             // The activation time, converted to whole seconds
-            let timestamp = Math.floor(syndicate["Expiry"]["$date"]["$numberLong"] / 1000);
-            console.log('Got Cetus time successfully');
-
-            let untilCycle;
-            let currentCycle;
-            let next_interval;
-            let d = new Date();
-            let time = d.getTime() / 1000;
-            // This time is the end of night and start of day
-            let start_time = (timestamp - 150 * 60)
-
-            let irltime_m = ((time - start_time) / 60) % 150;  // 100m of day + 50m of night
-
-            // Eidolon time is used to calculate the IRL time
-            let eidotime_in_h = (irltime_m / 6.25) + 6;
-            if (eidotime_in_h < 0) eidotime_in_h += 24;
-            if (eidotime_in_h > 24) eidotime_in_h -= 24;
-            let eidotime_h = Math.floor(eidotime_in_h);
-            let eidotime_m = Math.floor((eidotime_in_h * 60) % 60);
-            let eidotime_s = Math.floor((eidotime_in_h * 60 * 60) % 60);
-
-            let wrapped_time = eidotime_in_h - 5;
-            if (wrapped_time < 0) { wrapped_time += 24; }
-
-            // Night is from 9pm to 5am
-            // Day is from 5am to 9pm
-            if (150 - irltime_m > 50) {
-                // Time is day
-                next_interval = 21;
-                currentCycle = 'Day'
-                untilCycle = 'Night';
-            } else {
-                // Time is night
-                next_interval = 5;
-                currentCycle = 'Night';
-                untilCycle = 'Day';
-            }
-
-            let eido_until_h = next_interval - (eidotime_h % 24);
-            if (eido_until_h < 0) { eido_until_h += 24; }
-            let eido_until_m = 60 - eidotime_m;
-            let eido_until_s = 60 - eidotime_s;
-
-            let irl_until_in_h = ((eido_until_h + eido_until_m / 60 + eido_until_s / 60 / 60) * 6.25) / 60;
-
-            let irl_until_in_m = 150 - irltime_m;
-
-            if (irl_until_in_m > 50) { irl_until_in_m -= 50; }
-
-            let irl_until_h = Math.floor(irl_until_in_m / 60);
-            let irl_until_m = Math.floor(irl_until_in_m % 60);
-            let irl_until_s = Math.floor((irl_until_in_m * 60) % 60);
-
-            let timeOfDayEmoji = '';
-            if (currentCycle == 'Night') timeOfDayEmoji = ':crescent_moon: ';
-            else timeOfDayEmoji = ':sunny:';
-            
-            return `It is currently ${timeOfDayEmoji} (${currentCycle}) on Cetus. \n\n${irl_until_h}h ${irl_until_m}m ${irl_until_s}s until ${untilCycle}.`;
+            return Math.floor(syndicate["Expiry"]["$date"]["$numberLong"] / 1000);
         })
 }
 
+/**
+ * Translates in-game timestamp to IRL information
+ * @param timestamp the in-game timestamp
+ * @returns {until_h: number, until_m: number, until_s: number, cycle: string}
+ */
+function translateToIRL(timestamp){
+    let currentCycle;
+    let next_interval;
+    let d = new Date();
+    let time = d.getTime() / 1000;
+    // This time is the end of night and start of day
+    let start_time = (timestamp - 150 * 60);
+
+    let irltime_m = ((time - start_time) / 60) % 150;  // 100m of day + 50m of night
+
+    // Eidolon time is used to calculate the IRL time
+    let eidotime_in_h = (irltime_m / 6.25) + 6;
+    if (eidotime_in_h < 0) eidotime_in_h += 24;
+    if (eidotime_in_h > 24) eidotime_in_h -= 24;
+    let eidotime_h = Math.floor(eidotime_in_h);
+    let eidotime_m = Math.floor((eidotime_in_h * 60) % 60);
+    let eidotime_s = Math.floor((eidotime_in_h * 60 * 60) % 60);
+
+    // Night is from 9pm to 5am
+    // Day is from 5am to 9pm
+    if (150 - irltime_m > 50) {
+        // Time is day
+        next_interval = 21;
+        currentCycle = DAY;
+    } else {
+        // Time is night
+        next_interval = 5;
+        currentCycle = NIGHT;
+    }
+
+    let eido_until_h = next_interval - (eidotime_h % 24);
+    if (eido_until_h < 0) { eido_until_h += 24; }
+    let eido_until_m = 60 - eidotime_m;
+    let eido_until_s = 60 - eidotime_s;
+
+    let irl_until_in_m = 150 - irltime_m;
+
+    if (irl_until_in_m > 50) { irl_until_in_m -= 50; }
+
+    let irl_until_h = Math.floor(irl_until_in_m / 60);
+    let irl_until_m = Math.floor(irl_until_in_m % 60);
+    let irl_until_s = Math.floor((irl_until_in_m * 60) % 60);
+
+    return {
+        until_h: irl_until_h,
+        until_m: irl_until_m,
+        until_s: irl_until_s,
+        cycle: currentCycle
+    }
+}
+
+function getIRLState(){
+    return translateToIRL(getCetusTimestamp());
+}
+
+/**
+ * Get the Day/Night cycle message (One huge function)
+ * @returns {String}
+ */
+async function getTimeMessage() {
+    let timestamp = await (getCetusTimestamp());
+
+    console.log('Got Cetus time successfully');
+
+    let irl_state = translateToIRL(timestamp);
+
+    let h = irl_state.until_h;
+    let m = irl_state.until_m;
+    let s = irl_state.until_s;
+    let current_cycle = cycles[irl_state.cycle];
+    let emoji = cyclesEmoji[irl_state.cycle];
+    let next_cycle = cycles[(irl_state.cycle + 1) % 2];
+
+    return `It is currently ${emoji} (${current_cycle}) on Cetus. \n\n` +
+        `${h}h ${m}m ${s}s until ${next_cycle}.`;
+}
+
 // Export the function
-module.exports.updateTime = updateTime;
+module.exports.getTimeMessage = getTimeMessage;
+module.exports.getIRLState = getIRLState;

@@ -21,9 +21,9 @@ client.login(config.token);
 
 client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
-
-    // Set the topic change timer
-    initBot();
+    updateBot();
+    // Set a timer to check whether cycle changed and update bot accordingly
+    setInterval(() => {updateBot();}, 60000);
 
 });
 
@@ -57,8 +57,8 @@ client.on('message', async message => {
             break;
         case 'time':
             return getTime(message.channel.id);
-        case 'init':
-            return initBot(message.channel.id);
+        case 'test':
+            return updateBot(message.channel.id);
         default:
             // If command character + unknown command is given we at least need to let the user know
             let errorEmbed = `Unknown command: **${command}**`;
@@ -80,11 +80,10 @@ function getTime(channelIDArg) {
 }
 
 
-//Initialize the bot
-function initBot(channelID){
+//Updates the avatar and activity of the bot
+function updateBot(){
     let cycle = parser.getIRLState().cycle;
-    console.log(cycle)
-    if(cycle === DAY) {
+    if (DAY === cycle) {
         client.user.setAvatar('avatars/day.png');
         client.user.setActivity(`Cetus DAY`);
     }
