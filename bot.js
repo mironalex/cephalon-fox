@@ -97,6 +97,7 @@ function updateBot(){
                 client.user.setActivity(`Cetus DAY`).catch(function (error) {
                     console.log(error)
                 });
+                currentState = DAY;
             }
             else if (NIGHT === state.cycle && currentState !== state.cycle) {
                 client.user.setAvatar('avatars/night.png').catch(function (error) {
@@ -105,6 +106,7 @@ function updateBot(){
                 client.user.setActivity(`Cetus NIGHT`).catch(function (error) {
                     console.log(error);
                 });
+                currentState = NIGHT;
             }
         });
 }
