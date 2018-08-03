@@ -14,7 +14,7 @@ const cyclesEmoji = [':sunny:', ':crescent_moon:'];
  * Get the timestamp of Cetus/Plains of Eidolon
  * @returns {number}
  */
-async function getCetusTimestamp(){
+function getCetusTimestamp(){
     return request.get(wfStateURL)
         .then((stateJSON) => {
             let worldState;
@@ -90,30 +90,34 @@ function translateToIRL(timestamp){
     }
 }
 
-async function getIRLState(){
-    return translateToIRL(await (getCetusTimestamp()));
+function getIRLState(){
+    return getCetusTimestamp()
+        .then(timestamp => {
+            return translateToIRL(timestamp);
+        })
 }
 
 /**
  * Get the Day/Night cycle message (One huge function)
  * @returns {String}
  */
-async function getTimeMessage() {
-    let timestamp = await (getCetusTimestamp());
+function getTimeMessage() {
+    return getCetusTimestamp()
+        .then(timestamp =>{
+            console.log('Got Cetus time successfully');
 
-    console.log('Got Cetus time successfully');
+            let irl_state = translateToIRL(timestamp);
 
-    let irl_state = translateToIRL(timestamp);
+            let h = irl_state.until_h;
+            let m = irl_state.until_m;
+            let s = irl_state.until_s;
+            let current_cycle = cycles[irl_state.cycle];
+            let emoji = cyclesEmoji[irl_state.cycle];
+            let next_cycle = cycles[(irl_state.cycle + 1) % 2];
 
-    let h = irl_state.until_h;
-    let m = irl_state.until_m;
-    let s = irl_state.until_s;
-    let current_cycle = cycles[irl_state.cycle];
-    let emoji = cyclesEmoji[irl_state.cycle];
-    let next_cycle = cycles[(irl_state.cycle + 1) % 2];
-
-    return `It is currently ${emoji} (${current_cycle}) on Cetus. \n\n` +
-        `${h}h ${m}m ${s}s until ${next_cycle}.`;
+            return `It is currently ${emoji} (${current_cycle}) on Cetus. \n\n` +
+                `${h}h ${m}m ${s}s until ${next_cycle}.`;
+    });
 }
 
 // Export the function

@@ -80,23 +80,24 @@ function getTime(channelIDArg) {
 
 
 //Updates the avatar and activity of the bot
-async function updateBot(){
-    let state = await(parser.getIRLState());
-    if (DAY === state.cycle) {
-        client.user.setAvatar('avatars/day.png').catch(function (error) {
-            console.log(error);
+function updateBot(){
+    parser.getIRLState()
+        .then(state =>{
+            if (DAY === state.cycle) {
+                client.user.setAvatar('avatars/day.png').catch(function (error) {
+                    console.log(error);
+                });
+                client.user.setActivity(`Cetus DAY`).catch(function (error) {
+                    console.log(error)
+                });
+            }
+            else {
+                client.user.setAvatar('avatars/night.png').catch(function (error) {
+                    console.log(error);
+                });
+                client.user.setActivity(`Cetus NIGHT`).catch(function (error) {
+                    console.log(error);
+                });
+            }
         });
-        client.user.setActivity(`Cetus DAY`).catch(function (error) {
-            console.log(error)
-        });
-    }
-    else {
-        client.user.setAvatar('avatars/night.png').catch(function (error) {
-            console.log(error);
-        });
-        client.user.setActivity(`Cetus NIGHT`).catch(function (error) {
-            console.log(error);
-        });
-    }
-
 }
