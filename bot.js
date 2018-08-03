@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 // Config file that has the private variables needed
 const config = require('./config.js');
 const pjson = require('./package.json');
@@ -16,6 +18,9 @@ let os = require('os');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const DAY = 0;
+const NIGHT = 1;
+
+let currentState = DAY;
 
 client.login(config.token);
 
@@ -23,7 +28,9 @@ client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
 
     // Set a timer to check whether cycle changed and update bot accordingly
-    setInterval(updateBot, 60000);
+    setInterval(() => {
+        updateBot();
+    }, 60000);
 });
 
 client.on('message', async message => {
@@ -83,7 +90,7 @@ function getTime(channelIDArg) {
 function updateBot(){
     parser.getIRLState()
         .then(state =>{
-            if (DAY === state.cycle) {
+            if (DAY === state.cycle && currentState !== state.cycle) {
                 client.user.setAvatar('avatars/day.png').catch(function (error) {
                     console.log(error);
                 });
@@ -91,7 +98,7 @@ function updateBot(){
                     console.log(error)
                 });
             }
-            else {
+            else if (NIGHT === state.cycle && currentState !== state.cycle) {
                 client.user.setAvatar('avatars/night.png').catch(function (error) {
                     console.log(error);
                 });
