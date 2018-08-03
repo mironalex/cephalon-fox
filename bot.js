@@ -20,7 +20,7 @@ const client = new Discord.Client();
 const DAY = 0;
 const NIGHT = 1;
 
-let currentState = DAY;
+let currentState = -1;
 
 client.login(config.token);
 
@@ -40,7 +40,7 @@ client.on('message', async message => {
 
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     if (message.author.bot) return;
-    // Also good practice to ignore any message that does not start with the bot'ss prefix, 
+    // Also good practice to ignore any message that does not start with the bot'ss prefix,
     if (message.content.indexOf(prefix) !== 0) return;
 
     // Here we separate the 'command' name, and the 'arguments' for the command.
@@ -90,6 +90,7 @@ function getTime(channelIDArg) {
 function updateBot(){
     parser.getIRLState()
         .then(state =>{
+            console.log(`current state: ${currentState}, got state: ${state.cycle}`)
             if (DAY === state.cycle && currentState !== state.cycle) {
                 client.user.setAvatar('avatars/day.png').catch(function (error) {
                     console.log(error);
@@ -110,3 +111,4 @@ function updateBot(){
             }
         });
 }
+
