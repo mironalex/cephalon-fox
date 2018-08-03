@@ -2,7 +2,8 @@
 
 // Config file that has the private variables needed
 const config = require('./config.js');
-const ver = '2.0.0';
+const pjson = require('./package.json');
+const ver = pjson.version;
 
 // This is the custom parser to get the current time cycle on Cetus
 let parser = require('./wfTimeParseNew');
@@ -22,7 +23,6 @@ client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
 
     // Set a timer to check whether cycle changed and update bot accordingly
-    updateBot();
     setInterval(updateBot, 60000);
 });
 
