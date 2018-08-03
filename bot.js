@@ -14,6 +14,8 @@ var os = require('os');
 // Initialize the Discord bot using discord.js
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const DAY = 0;
+const NIGHT = 1;
 
 client.login(config.token);
 
@@ -21,12 +23,8 @@ client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
 
     // Set the topic change timer
-    setInterval(() => {
-        changeTimeTopic();
-    }, 1 * 60000);
+    initBot();
 
-    // Set the bot to be 'playing' a game
-    client.user.setActivity(`Warframe (Cetus - Level 10-30)`);
 });
 
 client.on('message', async message => {
@@ -59,35 +57,39 @@ client.on('message', async message => {
             break;
         case 'time':
             return getTime(message.channel.id);
+        case 'init':
+            return initBot(message.channel.id);
         default:
             // If command character + unknown command is given we at least need to let the user know
-            let errorEmbed = `Uknown command: **${command}**`;
+            let errorEmbed = `Unknown command: **${command}**`;
             return message.channel.send(errorEmbed);
     }
 });
 
 // This will send the message after the parser creates the string
 function getTime(channelIDArg) {
-    parser.updateTime()
+    let discordChannel = client.channels.get(channelIDArg);
+    parser.getTimeMessage()
         .then((response) => {
-            let discordChannel = client.channels.get(channelIDArg);
             discordChannel.send(response);
         })
         .catch((err) => {
-            discordChannel.setTopic('Could not fetch Cetus time.');
+            discordChannel.send('Could not fetch Cestus time');
             console.log(err);
         })
 }
 
-// Change the topic of the TS server to show the current time (this doesn't work for mnore than 1 server right now)
-function changeTimeTopic() {
-    let discordChannel = client.channels.get(config.channelID);
-    parser.updateTime()
-        .then((response) => {
-            discordChannel.setTopic(response);
-        })
-        .catch((err) => {
-            discordChannel.setTopic('Could not fetch Cetus time.');
-            console.log(err);
-        })
+
+//Initialize the bot
+function initBot(channelID){
+    let cycle = parser.getIRLState().cycle;
+    console.log(cycle)
+    if(cycle === DAY) {
+        client.user.setAvatar('avatars/day.png');
+        client.user.setActivity(`Cetus DAY`);
+    }
+    else {
+        client.user.setAvatar('avatars/night.png');
+        client.user.setActivity(`Cetus NIGHT`);
+    }
 }
