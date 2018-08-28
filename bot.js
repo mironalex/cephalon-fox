@@ -91,21 +91,36 @@ function updateBot(){
     parser.getIRLState()
         .then(state =>{
             console.log(`current state: ${currentState}, got state: ${state.cycle}`)
+
             if (DAY === state.cycle && currentState !== state.cycle) {
-                client.user.setAvatar('avatars/day.png').catch(function (error) {
-                    console.log(error);
-                });
-                client.user.setActivity(`Cetus DAY`).catch(function (error) {
+                if (currentState !== state.cycle){
+                    client.user.setAvatar('avatars/day.png').catch(function (error) {
+                        console.log(error);
+                    });
+                }
+                client.user.setActivity(`DAY - ` +
+                    state.until_h.toString() +
+                    'h' +
+                    state.until_m.toString() +
+                    'm until NIGHT'
+                ).catch(function (error) {
                     console.log(error)
                 });
                 currentState = DAY;
             }
             else if (NIGHT === state.cycle && currentState !== state.cycle) {
-                client.user.setAvatar('avatars/night.png').catch(function (error) {
-                    console.log(error);
-                });
-                client.user.setActivity(`Cetus NIGHT`).catch(function (error) {
-                    console.log(error);
+                if (currentState !== state.cycle){
+                    client.user.setAvatar('avatars/night.png').catch(function (error) {
+                        console.log(error);
+                    });
+                }
+                client.user.setActivity(`NIGHT - ` +
+                    state.until_h.toString() +
+                    'h' +
+                    state.until_m.toString() +
+                    'm until DAY'
+                ).catch(function (error) {
+                    console.log(error)
                 });
                 currentState = NIGHT;
             }
