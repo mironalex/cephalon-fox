@@ -92,7 +92,7 @@ function updateBot(){
         .then(state =>{
             console.log(`current state: ${currentState}, got state: ${state.cycle}`)
 
-            if (DAY === state.cycle && currentState !== state.cycle) {
+            if (DAY === state.cycle) {
                 if (currentState !== state.cycle){
                     client.user.setAvatar('avatars/day.png').catch(function (error) {
                         console.log(error);
@@ -108,7 +108,7 @@ function updateBot(){
                 });
                 currentState = DAY;
             }
-            else if (NIGHT === state.cycle && currentState !== state.cycle) {
+            else if (NIGHT === state.cycle) {
                 if (currentState !== state.cycle){
                     client.user.setAvatar('avatars/night.png').catch(function (error) {
                         console.log(error);
