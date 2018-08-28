@@ -1,9 +1,7 @@
-'use strict';
-
 require('dotenv').config();
 
 // Config file that has the private variables needed
-const config = require('./config.js');
+const token = process.env.TOKEN;
 const pjson = require('./package.json');
 const ver = pjson.version;
 
@@ -22,7 +20,9 @@ const NIGHT = 1;
 
 let currentState = -1;
 
-client.login(config.token);
+require('http').createServer().listen(3000);
+
+client.login(token);
 
 client.on('ready', () => {
     console.log(`Connected to Discord.\nLogged in as ${client.user.username} (${client.user.id})`);
